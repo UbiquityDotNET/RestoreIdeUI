@@ -1,12 +1,20 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="RestoreIdeUIOptionsPage.cs" company="Ubiquity.NET Contributors">
+// Copyright (c) Ubiquity.NET Contributors. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.VisualStudio.Shell;
 
 namespace RestoreIdeUI
 {
-    class RestoreIdeUIOptionsPage
+    [SuppressMessage( "Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Instantiated by VS IDE shell" )]
+    internal class RestoreIdeUIOptionsPage
         : DialogPage
     {
         [Category( "Title Bar" )]
@@ -29,15 +37,6 @@ namespace RestoreIdeUI
         [DisplayName( "Download news on Start Page" )]
         [Description( "Determines if the Start Page downloads news content" )]
         public bool StartPageDownloadContent { get; set; }
-
-        protected override void OnApply( PageApplyEventArgs e )
-        {
-            base.OnApply( e );
-            if( e.ApplyBehavior == ApplyKind.Apply )
-            {
-                ApplySettings( );
-            }
-        }
 
         internal void ApplySettings()
         {
@@ -74,6 +73,15 @@ namespace RestoreIdeUI
             }
 
             return null;
+        }
+
+        protected override void OnApply( PageApplyEventArgs e )
+        {
+            base.OnApply( e );
+            if( e.ApplyBehavior == ApplyKind.Apply )
+            {
+                ApplySettings( );
+            }
         }
     }
 }

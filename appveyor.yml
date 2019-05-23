@@ -1,0 +1,7 @@
+version: 1.0.{build}
+build:
+  verbosity: minimal
+
+artifacts:
+- path: BuildOutput\RestoreIdeUI\bin\Release\RestoredIdeUI.vsix
+  name: VSIX Package

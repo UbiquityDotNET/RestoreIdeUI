@@ -1,4 +1,11 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="RestoreIdeUIPackage.cs" company="Ubiquity.NET Contributors">
+// Copyright (c) Ubiquity.NET Contributors. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio;
@@ -10,6 +17,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace RestoreIdeUI
 {
+    /// <summary>VSIX Package for the Restored UI</summary>
     [PackageRegistration( UseManagedResourcesOnly = true, AllowsBackgroundLoading = true )]
     [ProvideAutoLoad( UIContextGuids80.EmptySolution, PackageAutoLoadFlags.BackgroundLoad )]
     [ProvideAutoLoad( UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad )]
@@ -19,8 +27,10 @@ namespace RestoreIdeUI
     public sealed class RestoreIdeUIPackage
         : AsyncPackage
     {
+        /// <summary>String GUID for the package</summary>
         public const string PackageGuidString = "4fecf9cd-6a0d-406c-9502-eb3952b50132";
 
+        /// <summary>Initializes a new instance of the <see cref="RestoreIdeUIPackage"/> class.</summary>
         public RestoreIdeUIPackage( )
         {
             Options = new Lazy<RestoreIdeUIOptionsPage>( ( ) => ( RestoreIdeUIOptionsPage )GetDialogPage( typeof( RestoreIdeUIOptionsPage ) ) );
@@ -31,6 +41,8 @@ namespace RestoreIdeUI
             } );
         }
 
+        /// <inheritdoc/>
+        [SuppressMessage( "Usage", "CA2201:Do not raise reserved exception types", Justification = "Since the VSSDK uses a preserve signature style COMException is the correct thing to do" )]
         protected override async Task InitializeAsync( CancellationToken cancellationToken, IProgress<ServiceProgressData> progress )
         {
             // switch to UI thread to update the main UI
@@ -53,17 +65,18 @@ namespace RestoreIdeUI
             Options.Value.ApplySettings( );
         }
 
+        /// <inheritdoc/>
+        protected override object GetService( Type serviceType )
+        {
+            return serviceType == typeof( IOleCommandTarget ) ? LazyCommandFilter.Value : base.GetService( serviceType );
+        }
+
         private void NoSolutionContext_UIContextChanged( object sender, UIContextChangedEventArgs e )
         {
             if( e.Activated )
             {
                 ShowStartPage( );
             }
-        }
-
-        protected override object GetService( Type service )
-        {
-            return service == typeof( IOleCommandTarget ) ? LazyCommandFilter.Value : base.GetService( service );
         }
 
         private void ShowStartPage( )

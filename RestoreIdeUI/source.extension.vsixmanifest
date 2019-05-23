@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="RestoreIdeUI.1eb8001f-4c54-4f37-a3b8-42afe9484037" Version="1.0" Language="en-US" Publisher="Steven Maillet" />
+        <Identity Id="RestoreIdeUI.1eb8001f-4c54-4f37-a3b8-42afe9484037" Version="0.1" Language="en-US" Publisher="Ubiquity.NET" />
         <DisplayName>RestoreIdeUI</DisplayName>
         <Description xml:space="preserve">VS 2019 to support restoring the UI experience to the VS2017 form. 
 This extensions adds the following options to the VS UI.
@@ -9,7 +9,11 @@ This extensions adds the following options to the VS UI.
 2) Automatically show the start page when no solution is loaded.
 3) Enable the news feed on the start page. 
 4) Disable the "New" New project dialog experience (Yes, the VS2017 experience is still there!)</Description>
+        <MoreInfo>https://github.com/UbiquityDotNET/RestoreIdeUI</MoreInfo>
+        <License>LICENSE</License>
         <PreviewImage>RestoreUI.png</PreviewImage>
+        <Tags>VS2019, UI, New Project Dialog, Start Page</Tags>
+        <Preview>true</Preview>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

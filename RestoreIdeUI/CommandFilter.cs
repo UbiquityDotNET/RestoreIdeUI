@@ -1,4 +1,11 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="CommandFilter.cs" company="Ubiquity.NET Contributors">
+// Copyright (c) Ubiquity.NET Contributors. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows;
 using Microsoft.Internal.VisualStudio.PlatformUI;
@@ -13,7 +20,7 @@ namespace RestoreIdeUI
     // Command filtering to catch when the start page is loaded
     // and then modify the page to trigger a change in the properties
     // that controls whether the RSS feed download is enabled.
-    class CommandFilter
+    internal class CommandFilter
         : IOleCommandTarget
     {
         public CommandFilter( IOleCommandTarget innerTarget )
@@ -32,7 +39,7 @@ namespace RestoreIdeUI
         {
             ThreadHelper.ThrowIfNotOnUIThread( );
             int retVal = InnerTarget.Exec( pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut );
-            if( ( uint )VSConstants.VSStd2KCmdID.StartPage == nCmdID && pguidCmdGroup == VSConstants.VSStd2K )
+            if( ( nCmdID == ( uint )VSConstants.VSStd2KCmdID.StartPage ) && ( pguidCmdGroup == VSConstants.VSStd2K ) )
             {
                 // post work onto UI thread after a 1 second delay. This ensures the page is
                 // actually created before attempting to modify any of the page's content.
@@ -41,9 +48,12 @@ namespace RestoreIdeUI
                 // the UI thread.
                 Task.Delay( 1000 ).ConfigureAwait( true ).GetAwaiter( ).OnCompleted( EnableNewsFeed );
             }
+
             return retVal;
         }
 
+        [SuppressMessage( "Design", "CA1031:Do not catch general exception types", Justification = "Too many undocumented exceptions could occur and this is a best effort action" )]
+        [SuppressMessage( "Potential Code Quality Issues", "RECS0022:A catch clause that catches System.Exception and has an empty body", Justification = "ditto" )]
         private static void EnableNewsFeed( )
         {
             // This is where things get UGLY/Fragile
@@ -72,20 +82,20 @@ namespace RestoreIdeUI
                 // RssFeed property resolves to dead link for Community editions, so reset it to
                 // the same link as other SKUs
                 var feedProp = rssdType.GetRuntimeProperty( "RssFeed" );
-                string currentFeed = (string)feedProp.GetValue( rssd );
+                string currentFeed = ( string )feedProp.GetValue( rssd );
                 string newFeed = currentFeed.Replace( CommunityLinkId, CorrectedLinkId );
                 feedProp.SetValue( rssd, newFeed );
 
                 // need to set the _announcementsFeed as it backs the Get only AnnouncementsFeed property
-                var anFeedField = rssdType.GetField( "_announcementsFeed", BindingFlags.NonPublic | BindingFlags.Instance );
-                anFeedField.SetValue( rssd, newFeed );
+                var announcmentsFeedField = rssdType.GetField( "_announcementsFeed", BindingFlags.NonPublic | BindingFlags.Instance );
+                announcmentsFeedField.SetValue( rssd, newFeed );
 
                 // RssFeedDataSourceBase declares a virtual "OnPropertyChanged" that updates the rest,
                 // so force a change of the DownloadEnabled property
                 var method = rssdType.GetMethod( "OnPropertyChanged", BindingFlags.Instance | BindingFlags.Public );
                 if( method != null )
                 {
-                    object[ ] parameters = new object[ ] { /*IVsUIDataSource ds*/null, "DownloadEnabled", /*IVsUIObject pVarOld*/null, BuiltInPropertyValue.FromBool( true ) };
+                    object[ ] parameters = { /*IVsUIDataSource ds*/null, "DownloadEnabled", /*IVsUIObject pVarOld*/null, BuiltInPropertyValue.FromBool( true ) };
                     /*void*/
                     _ = method.Invoke( rssd, parameters );
                 }
