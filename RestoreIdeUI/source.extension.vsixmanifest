@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="RestoreIdeUI.1eb8001f-4c54-4f37-a3b8-42afe9484037" Version="1.0" Language="en-US" Publisher="Steven Maillet" />
+        <DisplayName>RestoreIdeUI</DisplayName>
+        <Description xml:space="preserve">VS 2019 to support restoring the UI experience to the VS2017 form. 
+This extensions adds the following options to the VS UI.
+1) Hide the search box from the title bar.
+2) Automatically show the start page when no solution is loaded.
+3) Enable the news feed on the start page. 
+4) Disable the "New" New project dialog experience (Yes, the VS2017 experience is still there!)</Description>
+        <PreviewImage>RestoreUI.png</PreviewImage>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+</PackageManifest>
