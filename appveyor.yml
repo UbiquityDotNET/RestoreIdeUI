@@ -1,7 +1,9 @@
 version: 1.0.{build}
+image: Visual Studio 2019
+
 build:
   verbosity: minimal
 
 artifacts:
-- path: BuildOutput\RestoreIdeUI\bin\Release\RestoredIdeUI.vsix
+- path: RestoreIdeUI\bin\Release\RestoredIdeUI.vsix
   name: VSIX Package
