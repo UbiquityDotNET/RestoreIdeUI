@@ -20,7 +20,6 @@
         <Platform Condition="$(Platform)=='x86' AND '$(MSBuildProjectExtension)'=='.vcxproj'">Win32</Platform>
         <UnifiedPlatformPathName Condition="'$(UnifiedPlatformPathName)'==''">$(Platform)</UnifiedPlatformPathName>
         <UnifiedPlatformPathName Condition="'$(UnifiedPlatformPathName)'=='Win32'">x86</UnifiedPlatformPathName>
-        <UnifiedPlatformPathName Condition="'$(UnifiedPlatformPathName)'=='AnyCPU'">x64</UnifiedPlatformPathName>
 
         <Configuration Condition="'$(Configuration)'==''">Release</Configuration>
 
@@ -35,6 +34,10 @@
         <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'==''" >$([MSBuild]::NormalizeDirectory("$(BaseBuildOutputPath)", "Intermediate", "$(MSBuildProjectName)"))</BaseIntermediateOutputPath>
         <IntDir Condition="'$(IntDir)'==''">$([MSBuild]::NormalizeDirectory("$(BaseIntermediateOutputPath)", "$(UnifiedPlatformPathName)", "$(Configuration)"))</IntDir>
         <BaseOutputPath Condition="'$(BaseOutputPath)'==''">$([MSBuild]::NormalizeDirectory("$(BaseBuildOutputPath)","bin", "$(MSBuildProjectName)"))</BaseOutputPath>
+        <OutputPath Condition="'$(OutputPath)'==''">$([MSBuild]::NormalizeDirectory("$(BaseOutputPath)", "$(Configuration)", "$(UnifiedPlatformPathName)"))</OutputPath>
+        <OutputPath>$([MSBuild]::EnsureTrailingSlash("$(OutputPath)"))</OutputPath>
+        <OutDir Condition="'$(OutDir)'==''">$(OutputPath)</OutDir>
+
         <PackageOutputPath Condition="'$(PackageOutputPath)'==''">$([MSBuild]::NormalizeDirectory("$(BaseBuildOutputPath)","NuGet"))</PackageOutputPath>
 
         <BuildOutputPackagesDir Condition="'$(BuildOutputPackagesDir)'==''">$(BaseBuildOutputPath)packages\</BuildOutputPackagesDir>
@@ -73,14 +76,6 @@
             <ItemGroup>
                 <PackageReference Include="CSemVer.Build.Tasks" Version="2.0.3"/>
             </ItemGroup>
-        </When>
-        <When Condition="'$(MSBuildProjectExtension)'=='.vcxproj'">
-            <!-- vcxproj uses a different pattern for output paths -->
-            <PropertyGroup>
-                <OutputPath Condition="'$(OutputPath)'==''">$([MSBuild]::NormalizeDirectory("$(BaseOutputPath)", "$(Configuration)", "$(UnifiedPlatformPathName)"))</OutputPath>
-                <OutputPath>$([MSBuild]::EnsureTrailingSlash("$(OutputPath)"))</OutputPath>
-                <OutDir Condition="'$(OutDir)'==''">$(OutputPath)</OutDir>
-            </PropertyGroup>
         </When>
     </Choose>
 </Project>
