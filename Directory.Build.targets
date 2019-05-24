@@ -1,21 +1,18 @@
 <Project InitialTargets="InitializeBuild">
 
+  <!-- This target is invoked by the VSIX manifest detokenizer to get the version number for the package-->
   <Target Name="VsixManifestVersion"
-          Outputs="$(BuildMajor).$(BuildMinor).$(BuildPatch).$(FileVersionRevision)"
+          Outputs="$(FileVersion)"
           DependsOnTargets="PrepareVersioningForBuild" />
+
+  <Target Name="SetProjectSpecficVersionDependentProperties" AfterTargets="SetVersionDependentProperties">
+    <PropertyGroup>
+      <TargetVsixContainerName>$(AssemblyName).$(PackageVersion).vsix</TargetVsixContainerName>
+      <TargetVsixContainer>$(BaseBuildOutputPath)VSIX\$(TargetVsixContainerName)</TargetVsixContainer>
+    </PropertyGroup>
+  </Target>
 
   <Target Name="InitializeBuild" >
     <MakeDir Directories="$(BaseBuildOutputPath)\VSIX"/>
-
-    <Message Importance="normal" Text="              BuildRootDir: $(BuildRootDir)" />
-    <Message Importance="normal" Text="       BaseBuildOutputPath: $(BaseBuildOutputPath)" />
-    <Message Importance="normal" Text="BaseIntermediateOutputPath: $(BaseIntermediateOutputPath)" />
-    <Message Importance="normal" Text="                    IntDir: $(IntDir)" />
-    <Message Importance="normal" Text="            BaseOutputPath: $(BaseOutputPath)" />
-    <Message Importance="normal" Text="           FullBuildNumber: $(FullBuildNumber)"/>
-    <Message Importance="normal" Text="            PackageVersion: $(PackageVersion)"/>
-    <Message Importance="normal" Text="               FileVersion: $(FileVersion)"/>
-    <Message Importance="normal" Text="                  Platform: $(Platform)"/>
-    <Message Importance="normal" Text="             Configuration: $(Configuration)"/>
   </Target>
 </Project>

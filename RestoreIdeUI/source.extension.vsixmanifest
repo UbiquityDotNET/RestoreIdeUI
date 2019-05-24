@@ -6,7 +6,8 @@
                   Language="en-US"
                   Publisher="Ubiquity.NET" />
         <DisplayName>RestoreIdeUI</DisplayName>
-        <Description xml:space="preserve">VS 2019 to support restoring the UI experience to the VS2017 form.
+        <Description xml:space="preserve">
+VS 2019 extension to support restoring the UI experience to the VS2017 form.
 This extensions adds the following options to the VS UI.
 1) Hide the search box from the title bar.
 2) Automatically show the start page when no solution is loaded.
