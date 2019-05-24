@@ -4,13 +4,17 @@ image: Visual Studio 2019
 configuration: Release
 platform: Any CPU
 
-before_build:
-- cmd: msbuild RestoreIdeUI.sln /restore
+skip_commits:
+  files:
+    - '**\*.md'
 
-build:
-  project: RestoreIdeUI.sln
-  verbosity: minimal
-  
+init:
+  - git config --global core.safecrlf false
+  - git config --global core.autocrlf input
+
+build_script:
+  - ps: .\BuildAll.ps1
+
 artifacts:
 - path: ./BuildOutput/VSIX/*.vsix
   name: VSIX Package
