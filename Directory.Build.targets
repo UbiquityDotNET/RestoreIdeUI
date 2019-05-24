@@ -1,57 +1,8 @@
-<Project InitialTargets="ShowBuildParameters">
-  <!--
-  Since Nuget.config is configured to include the build output location this
-  will ensure the folder exists during restore so that it won't fail.
-  -->
-  <Target Name="CreateBuildOutputNuget" BeforeTargets="Restore;Build;Rebuild">
-      <MakeDir Directories="$(MSBuildThisFileDirectory)BuildOutput\NuGet" />
-  </Target>
+<Project InitialTargets="InitializeBuild">
 
-  <!--<Target Name="SetProjectSpecficVersionDependentProperties" AfterTargets="SetVersionDependentProperties">
-    <PropertyGroup>
-    </PropertyGroup>
-  </Target>-->
+  <Target Name="InitializeBuild" >
+    <MakeDir Directories="$(BaseBuildOutputPath)\VSIX"/>
 
-  <!-- Download nuget.exe if it isn't found-->
-  <Target Name="_DownloadNugetExe" >
-    <MakeDir Directories="$(PackageOutputPath)" Condition="!EXISTS('$(PackageOutputPath')" />
-    <DownloadFile Condition="!EXISTS('$(PackageOutputPath)\NuGet.exe')"
-                  SourceUrl="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-                  DestinationPath="$(PackageOutputPath)\NuGet.exe"
-                  />
-  </Target>
-
-  <!-- Custom task to download a file from a web URL -->
-  <UsingTask TaskName="DownloadFile"
-             TaskFactory="CodeTaskFactory"
-             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll"
-           >
-      <ParameterGroup>
-          <SourceUrl ParameterType="System.String" Required="true"/>
-          <DestinationPath ParameterType="System.String" Required="true"/>
-      </ParameterGroup>
-      <Task>
-          <Using Namespace="System.Net"/>
-          <Code Type="Fragment" Language="cs">
-              <![CDATA[
-        var client = new WebClient();
-        client.DownloadFile( SourceUrl, DestinationPath );
-      ]]>
-          </Code>
-      </Task>
-  </UsingTask>
-
-  <!-- Create NuGet packages for NuSpec property in VCXPROJ projects -->
-  <Target Name="Pack" DependsOnTargets="_DownloadNugetExe;SetProjectSpecficVersionDependentProperties" Condition="'$(MSBuildProjectExtension)'=='.vcxproj'">
-    <Exec Condition="exists('$(NuSpecFile)')"
-          Command='"$(PackageOutputPath)NuGet.exe" pack $(NuSpecFile) -OutputDirectory $(PackageOutputPath) -Properties $(NuspecProperties) -NoPackageAnalysis' />
-  </Target>
-
-  <Target Name="EnsureBuildOutputPaths" BeforeTargets="Build;Restore">
-    <MakeDir Directories="$(PackageOutputPath)"/>
-  </Target>
-
-  <Target Name="ShowBuildParameters">
     <Message Importance="normal" Text="              BuildRootDir: $(BuildRootDir)" />
     <Message Importance="normal" Text="       BaseBuildOutputPath: $(BaseBuildOutputPath)" />
     <Message Importance="normal" Text="BaseIntermediateOutputPath: $(BaseIntermediateOutputPath)" />
