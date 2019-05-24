@@ -1,5 +1,9 @@
 <Project InitialTargets="InitializeBuild">
 
+  <Target Name="VsixManifestVersion"
+          Outputs="$(BuildMajor).$(BuildMinor).$(BuildPatch).$(FileVersionRevision)"
+          DependsOnTargets="PrepareVersioningForBuild" />
+
   <Target Name="InitializeBuild" >
     <MakeDir Directories="$(BaseBuildOutputPath)\VSIX"/>
 
