@@ -1,6 +1,8 @@
 # RestoreIdeUI
 VSIX package to restore Visual Studio 2019 UI to preferred VS2017 style
 
+[![Build status](https://ci.appveyor.com/api/projects/status/36b9d7v0nfsycgx9/branch/master?svg=true)](https://ci.appveyor.com/project/UbiquityDotNet/restoreideui/branch/master)
+
 ## Features
 This extension enables users of VS2019 to effectively revert some of the controversial UI changes made to VS2019.
 * Hide the search box (again)
