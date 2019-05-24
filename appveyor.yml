@@ -12,5 +12,5 @@ build:
   verbosity: minimal
   
 artifacts:
-- path: RestoreIdeUI\bin\Release\RestoredIdeUI.vsix
+- path: BuildOutput/**/RestoredIdeUI.vsix
   name: VSIX Package
