@@ -32,13 +32,13 @@ namespace RestoreIdeUI
         public int QueryStatus( ref Guid pguidCmdGroup, uint cCmds, OLECMD[ ] prgCmds, IntPtr pCmdText )
         {
             ThreadHelper.ThrowIfNotOnUIThread( );
-            return InnerTarget.QueryStatus( pguidCmdGroup, cCmds, prgCmds, pCmdText );
+            return InnerTarget?.QueryStatus( pguidCmdGroup, cCmds, prgCmds, pCmdText ) ?? VSConstants.S_OK;
         }
 
         public int Exec( ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut )
         {
             ThreadHelper.ThrowIfNotOnUIThread( );
-            int retVal = InnerTarget.Exec( pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut );
+            int retVal = InnerTarget?.Exec( pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut ) ?? VSConstants.S_OK;
             if( ( nCmdID == ( uint )VSConstants.VSStd2KCmdID.StartPage ) && ( pguidCmdGroup == VSConstants.VSStd2K ) )
             {
                 // post work onto UI thread after a 1 second delay. This ensures the page is

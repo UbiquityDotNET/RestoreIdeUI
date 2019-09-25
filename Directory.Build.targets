@@ -1,6 +1,6 @@
 <Project InitialTargets="InitializeBuild">
 
-  <!-- This target is invoked by the VSIX manifest detokenizer to get the version number for the package-->
+  <!-- This target is invoked by the VSIX manifest detokenizer to get the version number for the package -->
   <Target Name="VsixManifestVersion"
           Outputs="$(FileVersion)"
           DependsOnTargets="PrepareVersioningForBuild" />
