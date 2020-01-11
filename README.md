@@ -1,3 +1,6 @@
+# This project is no longer active and archived (Read-Only)
+VS has changed in subsequent releases to where the (fragile) techniques used here are no longer functional. Unfortunately the IDE has not provided any ways to resolve the issues this attempted to work around. If the lack of that functionality is a concenr to you please let the VS team know via feedback. The more voices identify an issue the greater the chances the team will address them. 
+
 # RestoreIdeUI
 VSIX package to restore Visual Studio 2019 UI to preferred VS2017 style
 
